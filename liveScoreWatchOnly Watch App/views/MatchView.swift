@@ -35,8 +35,12 @@ struct ScoreView: View {
                     .font(.subheadline)
                 Divider()
                 
-                Text(currentScore(match.player1Points))
-                    .font(.subheadline)
+                if(match.isTieBreak){
+                    Text("\(match.player1TieBreakPoints)").padding()
+                }else{
+                    Text(currentScore(match.player1Points))
+                        .font(.subheadline)
+                }
             }
             .padding()
             
@@ -56,9 +60,12 @@ struct ScoreView: View {
                 Text("\(match.player2Games)")
                     .font(.subheadline)
                 Divider()
-                
-                Text(currentScore(match.player2Points))
-                    .font(.subheadline)
+                if(match.isTieBreak){
+                    Text("\(match.player2TieBreakPoints)").padding()
+                }else{
+                    Text(currentScore(match.player2Points))
+                        .font(.subheadline)
+                }
             }
             .padding()
             
@@ -68,15 +75,22 @@ struct ScoreView: View {
                 Button(action: {
                     match.pointWon(by: .player1)
                 }) {
-                    Text("Player 1 Scores")
-                        .padding()
+                    if(match.isTieBreak){
+                        Text("\(match.player1TieBreakPoints)").padding()
+                    }else{
+                        Text(currentScore(match.player1Points))
+                    }
                 }
                 
                 Button(action: {
                     match.pointWon(by: .player2)
                 }) {
-                    Text("Player 2 Scores")
-                        .padding()
+                    if(match.isTieBreak){
+                        Text("\(match.player2TieBreakPoints)").padding()
+                    }else{
+                        Text(currentScore(match.player2Points))
+                            .font(.subheadline)
+                    }
                 }
             }
             
@@ -91,7 +105,7 @@ struct ScoreView: View {
     
     private func currentScore(_ points: Int) -> String {
         switch points {
-        case 0: return "Love"
+        case 0: return "0"
         case 1: return "15"
         case 2: return "30"
         case 3: return "40"
