@@ -8,131 +8,98 @@
 import SwiftUI
 
 struct MatchView: View {
-    @State var match: Match
-    
+    @State private var match = TennisMatch()
+
     var body: some View {
         ScoreView(match: $match)
     }
 }
 
 struct ScoreView: View {
-    @Binding var match: Match
+    @Binding var match: TennisMatch
     
     var body: some View {
         VStack {
             HStack {
-                Text(match.player1.name)
+                Text("Player 1")
                     .font(.headline)
+                    .foregroundColor(match.server == .player1 ? .green : .primary)
+                
                 Divider()
-                if(match.player1.score.currentSet==0){
-                    Text("\(match.player1.score.games)")
-                        .font(.subheadline)
-                }else{
-                    Text("\(match.player1.score.setHistory[0].player1Games)")
-                        .font(.subheadline)
-                }
+                
+                Text("\(match.player1Sets)")
+                    .font(.subheadline)
                 Divider()
-                if(match.player1.score.currentSet==1){
-                    Text("\(match.player1.score.games)")
-                        .font(.subheadline)
-                }else{
-                    Text("\(match.player1.score.setHistory[1].player1Games)")
-                        .font(.subheadline)
-                }
+                
+                Text("\(match.player1Games)")
+                    .font(.subheadline)
                 Divider()
-                if(match.player1.score.currentSet==2){
-                    Text("\(match.player1.score.games)")
-                        .font(.subheadline)
-                }else{
-                    Text("\(match.player1.score.setHistory[2].player1Games)")
-                        .font(.subheadline)
-                }
-            }.padding()
-            Divider()
-            HStack {
-                Text(match.player2.name)
-                    .font(.headline)
-                Divider()
-                if(match.player2.score.currentSet==0){
-                    Text("\(match.player2.score.games)")
-                        .font(.subheadline)
-                }else{
-                    Text("\(match.player2.score.setHistory[0].player2Games)")
-                        .font(.subheadline)
-                }
-                Divider()
-                if(match.player2.score.currentSet==1){
-                    Text("\(match.player2.score.games)")
-                        .font(.subheadline)
-                }else{
-                    Text("\(match.player2.score.setHistory[1].player2Games)")
-                        .font(.subheadline)
-                }
-                Divider()
-                if(match.player2.score.currentSet==2){
-                    Text("\(match.player2.score.games)")
-                        .font(.subheadline)
-                }else{
-                    Text("\(match.player2.score.setHistory[2].player2Games)")
-                        .font(.subheadline)
-                }
+                
+                Text(currentScore(match.player1Points))
+                    .font(.subheadline)
             }
             .padding()
-        }
-        
-        VStack{
-            HStack{
+            
+            Divider()
+            
+            HStack {
+                Text("Player 2")
+                    .font(.headline)
+                    .foregroundColor(match.server == .player2 ? .green : .primary)
+                
+                Divider()
+                
+                Text("\(match.player2Sets)")
+                    .font(.subheadline)
+                Divider()
+                
+                Text("\(match.player2Games)")
+                    .font(.subheadline)
+                Divider()
+                
+                Text(currentScore(match.player2Points))
+                    .font(.subheadline)
+            }
+            .padding()
+            
+            Divider()
+            
+            HStack {
                 Button(action: {
-                    var opponentScore = match.player2.score
-                    var gameWon = match.player1.score.addPoint(opponentScore: &opponentScore)
-                    match.player1Scores()
-                    match.player2.score = opponentScore
-                    print(match.lastScored)
+                    match.pointWon(by: .player1)
                 }) {
-                    if(match.player1.score.advantage==true){
-                        Text("ADV")
-                            .padding()
-                    }else{
-                        Text("\(match.player1.score.points)")
-                            .padding()
-                    }
+                    Text("Player 1 Scores")
+                        .padding()
                 }
-                .padding()
                 
                 Button(action: {
-                    var opponentScore = match.player1.score
-                    var gameWon = match.player2.score.addPoint(opponentScore: &opponentScore)
-                    match.player2Scores()
-                    match.player1.score = opponentScore
+                    match.pointWon(by: .player2)
                 }) {
-                    if(match.player2.score.advantage==true){
-                        Text("ADV")
-                            .padding()
-                    }else{
-                        Text("\(match.player2.score.points)")
-                            .padding()
-                    }
+                    Text("Player 2 Scores")
+                        .padding()
                 }
-                .padding()
             }
-            if(match.lastScored != 0){
-                Button(action: {
-                    match.rollbackLastAction()
-                }, label: {
-                    Text("Undo")
-                })
+            
+            if match.player1Sets == match.setsToWinMatch || match.player2Sets == match.setsToWinMatch {
+                Text("Match Over")
+                    .font(.title)
+                    .foregroundColor(.red)
+                    .padding()
             }
+        }
+    }
+    
+    private func currentScore(_ points: Int) -> String {
+        switch points {
+        case 0: return "Love"
+        case 1: return "15"
+        case 2: return "30"
+        case 3: return "40"
+        default: return "ADV"
         }
     }
 }
 
-
-
-
-
 #Preview {
-    MatchView(match: Match(
-        player1: Player(name: "Player 1", score: Score()),
-        player2: Player(name: "Player 2", score: Score()), lastScored: 0
-))
+    MatchView()
 }

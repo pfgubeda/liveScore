@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var match: Match?
+    @State private var match: TennisMatch?
     @State private var isMatchCreated: Bool = false
     
     var body: some View {
@@ -20,10 +20,7 @@ struct ContentView: View {
                 ).font(.title2)
                 
                 Button(action: {
-                    match = Match(
-                        player1: Player(name: "Player 1", score: Score()),
-                        player2: Player(name: "Player 2", score: Score()), lastScored:0
-                    )
+                    match = TennisMatch()
                     isMatchCreated = true
                 }) {
                     Text("New Match")
@@ -41,7 +38,7 @@ struct ContentView: View {
                 .padding()
             }
         }else if(isMatchCreated==true){
-            MatchView(match: match!)
+            MatchView()
         }
     }
 }
