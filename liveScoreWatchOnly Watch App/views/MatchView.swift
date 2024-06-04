@@ -8,20 +8,28 @@
 import SwiftUI
 
 struct MatchView: View {
-    @State private var match = TennisMatch()
+    @State private var match: TennisMatch
 
-    var body: some View {
-        ScoreView(match: $match)
-    }
+       init(player1Name: String, player2Name: String, server: Player) {
+           _match = State(initialValue: TennisMatch(player1: PlayerDetails(name: player1Name),
+                                                    player2: PlayerDetails(name: player2Name),
+                                                    server: server, winner: PlayerDetails(name: "null")))
+       }
+
+       var body: some View {
+           ScoreView(match: $match)
+       }
 }
 
 struct ScoreView: View {
     @Binding var match: TennisMatch
+    @State private var showMatchOver = false
     
     var body: some View {
         VStack {
             HStack {
-                Text("Player 1")
+                Image(systemName: "tennisball").opacity(match.server == .player1 ? 1:0)
+                Text("\(match.player1.name)")
                     .font(.headline)
                     .foregroundColor(match.server == .player1 ? .green : .primary)
                 
@@ -47,7 +55,8 @@ struct ScoreView: View {
             Divider()
             
             HStack {
-                Text("Player 2")
+                Image(systemName: "tennisball").opacity(match.server == .player2 ? 1:0)
+                Text("\(match.player2.name)")
                     .font(.headline)
                     .foregroundColor(match.server == .player2 ? .green : .primary)
                 
@@ -70,38 +79,53 @@ struct ScoreView: View {
             .padding()
             
             Divider()
-            
-            HStack {
-                Button(action: {
-                    match.pointWon(by: .player1)
-                }) {
-                    if(match.isTieBreak){
-                        Text("\(match.player1TieBreakPoints)").padding()
-                    }else{
-                        Text(currentScore(match.player1Points))
+            if(showMatchOver==false){
+                HStack {
+                    
+                    Button(action: {
+                        match.pointWon(by: .player1)
+                        checkMatchOver()
+                    }) {
+                        if(match.isTieBreak){
+                            Text("\(match.player1TieBreakPoints)").padding()
+                        }else{
+                            Text(currentScore(match.player1Points))
+                        }
                     }
-                }
-                
-                Button(action: {
-                    match.pointWon(by: .player2)
-                }) {
-                    if(match.isTieBreak){
-                        Text("\(match.player2TieBreakPoints)").padding()
-                    }else{
-                        Text(currentScore(match.player2Points))
-                            .font(.subheadline)
+                    
+                    Button(action: {
+                        match.pointWon(by: .player2)
+                        checkMatchOver()
+                    }) {
+                        if(match.isTieBreak){
+                            Text("\(match.player2TieBreakPoints)").padding()
+                        }else{
+                            Text(currentScore(match.player2Points))
+                                .font(.subheadline)
+                        }
                     }
                 }
             }
             
+            if showMatchOver {
+                Text("\(match.winner.name)")
+                                .font(.title)
+                                .foregroundColor(.red)
+                                .padding()
+                                .transition(.scale)
+                                .animation(.easeInOut(duration: 1), value: showMatchOver)
+                        }
+        }
+        
+    }
+    
+    private func checkMatchOver() {
             if match.player1Sets == match.setsToWinMatch || match.player2Sets == match.setsToWinMatch {
-                Text("Match Over")
-                    .font(.title)
-                    .foregroundColor(.red)
-                    .padding()
+                withAnimation {
+                    showMatchOver = true
+                }
             }
         }
-    }
     
     private func currentScore(_ points: Int) -> String {
         switch points {
@@ -114,6 +138,11 @@ struct ScoreView: View {
     }
 }
 
+struct PlayerFront {
+    let name: String
+    let order: Player
+}
+
 #Preview {
-    MatchView()
+    MatchView(player1Name: "Pepe", player2Name: "Pablo", server: Player.player2)
 }

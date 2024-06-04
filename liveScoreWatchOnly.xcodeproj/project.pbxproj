@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		654E4A6B2C0F442B00FF8ABC /* MatchConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E4A6A2C0F442B00FF8ABC /* MatchConfigView.swift */; };
 		657395FC2C0DB0B0009C22BC /* liveScoreWatchOnly Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 657395FB2C0DB0B0009C22BC /* liveScoreWatchOnly Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		657396012C0DB0B0009C22BC /* liveScoreWatchOnlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657396002C0DB0B0009C22BC /* liveScoreWatchOnlyApp.swift */; };
 		657396032C0DB0B0009C22BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657396022C0DB0B0009C22BC /* ContentView.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		654E4A6A2C0F442B00FF8ABC /* MatchConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchConfigView.swift; sourceTree = "<group>"; };
 		657395F52C0DB0B0009C22BC /* liveScoreWatchOnly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = liveScoreWatchOnly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		657395FB2C0DB0B0009C22BC /* liveScoreWatchOnly Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "liveScoreWatchOnly Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		657396002C0DB0B0009C22BC /* liveScoreWatchOnlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = liveScoreWatchOnlyApp.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				657396132C0DB2F0009C22BC /* MatchView.swift */,
+				654E4A6A2C0F442B00FF8ABC /* MatchConfigView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				654E4A6B2C0F442B00FF8ABC /* MatchConfigView.swift in Sources */,
 				657396032C0DB0B0009C22BC /* ContentView.swift in Sources */,
 				657396012C0DB0B0009C22BC /* liveScoreWatchOnlyApp.swift in Sources */,
 				657396182C0DB9B6009C22BC /* MatchModel.swift in Sources */,

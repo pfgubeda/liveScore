@@ -7,9 +7,18 @@
 
 import Foundation
 
-enum Player {
+enum Player: String, Identifiable {
     case player1
     case player2
+    
+    var id: String { rawValue }
+}
+
+struct PlayerDetails {
+    let name: String
+    var points: Int = 0
+    var games: Int = 0
+    var sets: Int = 0
 }
 
 enum Score {
@@ -31,11 +40,14 @@ struct TennisMatch {
     private(set) var isTieBreak: Bool = false
     private(set) var player1TieBreakPoints: Int = 0
     private(set) var player2TieBreakPoints: Int = 0
-    private(set) var server: Player = .player1
+    var player1: PlayerDetails
+    var player2: PlayerDetails
+    var server: Player
+    var winner: PlayerDetails
     
     let gamesToWinSet = 6
     let pointsToWinTieBreak = 7
-    let setsToWinMatch = 3
+    let setsToWinMatch = 2
     
     mutating func pointWon(by player: Player) {
         if isTieBreak {
@@ -128,9 +140,11 @@ struct TennisMatch {
         player1TieBreakPoints = 0
         player2TieBreakPoints = 0
         
-        if player1Sets == setsToWinMatch || player2Sets == setsToWinMatch {
-            // Match won
-            // Additional logic can be added here if needed
+        if player1Sets == setsToWinMatch {
+            winner = player1
+        }
+        if player2Sets == setsToWinMatch {
+            winner = player2
         }
     }
     
@@ -141,7 +155,7 @@ struct TennisMatch {
     func currentScore() -> (player1: Score, player2: Score) {
         return (convertPointsToScore(player1Points), convertPointsToScore(player2Points))
     }
-    
+
     private func convertPointsToScore(_ points: Int) -> Score {
         switch points {
         case 0: return .love

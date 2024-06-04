@@ -12,33 +12,25 @@ struct ContentView: View {
     @State private var isMatchCreated: Bool = false
     
     var body: some View {
-        if(isMatchCreated==false){
+        NavigationStack {
             VStack {
                 Label(
                     title: { Text("Live Score") },
                     icon: { Image(systemName: "tennisball") }
                 ).font(.title2)
                 
-                Button(action: {
-                    match = TennisMatch()
-                    isMatchCreated = true
-                }) {
-                    Text("New Match")
-                        .padding()
+                NavigationLink("New Match"){
+                    MatchConfigView()
                 }
                 .padding()
                 
-                Button(action: {
-                    //implement load match
-                }) {
-                    Text("Continue Match")
-                        .padding()
+                
+                NavigationLink("Continue Match"){
+                    MatchConfigView()
                 }
                 .colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
             }
-        }else if(isMatchCreated==true){
-            MatchView()
         }
     }
 }
