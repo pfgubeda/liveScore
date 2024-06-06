@@ -10,14 +10,15 @@ import SwiftUI
 struct MatchView: View {
     @State private var match: TennisMatch
 
-       init(player1Name: String, player2Name: String, server: Player) {
+    init(player1Name: String, player2Name: String, server: Player, isFiveSets: Bool) {
            _match = State(initialValue: TennisMatch(player1: PlayerDetails(name: player1Name),
                                                     player2: PlayerDetails(name: player2Name),
-                                                    server: server, winner: PlayerDetails(name: "null")))
+                                                    server: server, winner: PlayerDetails(name: "null"), isGamemodeFiveSets: isFiveSets))
        }
 
        var body: some View {
            ScoreView(match: $match)
+               .navigationBarBackButtonHidden()
        }
 }
 
@@ -28,7 +29,9 @@ struct ScoreView: View {
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: "tennisball").opacity(match.server == .player1 ? 1:0)
+                Image(systemName: "tennisball")
+                    .opacity(match.server == .player1 ? 1:0)
+                    .animation(.bouncy(duration: 1), value: match.server)
                 Text("\(match.player1.name)")
                     .font(.headline)
                     .foregroundColor(match.server == .player1 ? .green : .primary)
@@ -55,7 +58,9 @@ struct ScoreView: View {
             Divider()
             
             HStack {
-                Image(systemName: "tennisball").opacity(match.server == .player2 ? 1:0)
+                Image(systemName: "tennisball")
+                    .opacity(match.server == .player2 ? 1:0)
+                    .animation(.bouncy(duration: 1), value: match.server)
                 Text("\(match.player2.name)")
                     .font(.headline)
                     .foregroundColor(match.server == .player2 ? .green : .primary)
@@ -110,10 +115,11 @@ struct ScoreView: View {
             if showMatchOver {
                 Text("\(match.winner.name)")
                                 .font(.title)
-                                .foregroundColor(.red)
+                                .foregroundColor(.green)
                                 .padding()
                                 .transition(.scale)
-                                .animation(.easeInOut(duration: 1), value: showMatchOver)
+                                .animation(.easeInOut(duration: 5), value: showMatchOver)
+                
                         }
         }
         
@@ -144,5 +150,5 @@ struct PlayerFront {
 }
 
 #Preview {
-    MatchView(player1Name: "Pepe", player2Name: "Pablo", server: Player.player2)
+    MatchView(player1Name: "Pepe", player2Name: "Pablo", server: Player.player2, isFiveSets: true )
 }

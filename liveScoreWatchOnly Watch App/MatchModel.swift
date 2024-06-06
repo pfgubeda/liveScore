@@ -19,7 +19,6 @@ struct PlayerDetails {
     var points: Int = 0
     var games: Int = 0
     var sets: Int = 0
-    var server: Int = 0
 }
 
 enum Score {
@@ -45,11 +44,10 @@ struct TennisMatch {
     var player2: PlayerDetails
     var server: Player
     var winner: PlayerDetails
-    var isGamemodeFiveSets: Bool
     
     let gamesToWinSet = 6
     let pointsToWinTieBreak = 7
-    var setsToWinMatch =  2
+    let setsToWinMatch = 2
     
     mutating func pointWon(by player: Player) {
         if isTieBreak {
@@ -141,7 +139,6 @@ struct TennisMatch {
         player2Games = 0
         player1TieBreakPoints = 0
         player2TieBreakPoints = 0
-        setsToWinMatch = isGamemodeFiveSets ? 3 : 2
         
         if player1Sets == setsToWinMatch {
             winner = player1

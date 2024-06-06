@@ -11,7 +11,7 @@ struct MatchConfigView: View {
     @State private var player1Name: String = ""
     @State private var player2Name: String = ""
     @State private var server: Player = .player1
-    @State private var navigateToMatchView = false
+    @State private var isFiveSets = false
 
     var body: some View {
         NavigationStack {
@@ -24,6 +24,19 @@ struct MatchConfigView: View {
                         TextField("Player 2 Name", text: $player2Name)
                             .padding()
                     }else if(!player1Name.isEmpty && !player2Name.isEmpty){
+                        
+                        HStack {
+                            Toggle("Sets", isOn: $isFiveSets)
+                                .toggleStyle(SwitchToggleStyle(tint: .blue)) // Customize toggle style
+                            Text(isFiveSets ? "5" : "3")
+                                .foregroundColor(.blue)
+                                .font(.headline)
+                        }
+                        
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(10) 
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
                         HStack {
                             VStack{
                                 Button("\(player1Name)", action: {
@@ -38,9 +51,12 @@ struct MatchConfigView: View {
                                 Image(systemName: "tennisball").opacity(server == .player2 ? 1:0)
                             }
                         }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
                         NavigationLink("Start Match"){
-                            MatchView(player1Name: player1Name, player2Name: player2Name, server: server)
+                            MatchView(player1Name: player1Name, player2Name: player2Name, server: server, isFiveSets: isFiveSets)
                         }.colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                            .padding(.horizontal, 8)
                     }
                 }
                 .navigationTitle("Setup Match")
