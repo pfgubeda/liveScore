@@ -90,9 +90,8 @@ struct ScoreView: View {
             .padding()
             
             Divider()
-            if(showMatchOver==false){
+            if(!showMatchOver){
                 HStack {
-                    
                     Button(action: {
                         match.pointWon(by: .player1)
                         checkMatchOver()
@@ -112,23 +111,34 @@ struct ScoreView: View {
                             Text("\(match.player2TieBreakPoints)").padding()
                         }else{
                             Text(currentScore(match.player2Points))
-                                .font(.subheadline)
                         }
                     }
                 }
             }
             
             if showMatchOver {
+                var matchNameFinished = checkMatchWinner()
+               
                 Text("\(match.winner.name)")
                                 .font(.title)
-                                .foregroundColor(.green)
+                                .foregroundColor(matchNameFinished ?  .green : .blue)
                                 .padding()
                                 .transition(.scale)
                                 .animation(.easeInOut(duration: 5), value: showMatchOver)
                 
                         }
+        }.onAppear(){
+            if(match.isMatchFinished){
+                showMatchOver=true
+            }
         }
-        
+    }
+    
+    private func checkMatchWinner() -> Bool{
+        if(match.winner.name=="Unfinished"){
+            return false
+        }
+        return true
     }
     
     private func checkMatchOver() {

@@ -10,6 +10,7 @@ import SwiftData
 enum Routes: Hashable {
     case ConfigMatch
     case ContinueMatch
+    case History
 }
 
 class ReturnRoot: ObservableObject {
@@ -29,35 +30,42 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack(path: $root.path) {
-            VStack {
-                Label(
-                    title: { Text("Live Score") },
-                    icon: { Image(systemName: "tennisball") }
-                ).font(.title2)
-                
-                
-                
-                if(!match.isEmpty){
-                    NavigationLink("Continue Match", value: Routes.ContinueMatch)
-                        .colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                        .padding()
-                }
-                
-                NavigationLink("New Match", value: Routes.ConfigMatch)
-                .padding()
-                .navigationDestination(for: Routes.self){ route in
-                    switch route {
-                    case .ContinueMatch:
-                        MatchView(match: match[0])
-                    case .ConfigMatch:
-                        MatchConfigView().onAppear(perform: {
-                            if(!match.isEmpty){
-                                match[0].finishMatch()
-                                context.insert(match[0])
-                                try? context.save()
-                            }
-                        })
+ 
+                VStack {
+                    Label(
+                        title: { Text("Live Score") },
+                        icon: { Image(systemName: "tennisball") }
+                    ).font(.title2)
+                    
+                    ScrollView{
+                    
+                    if(!match.isEmpty){
+                        NavigationLink("Continue Match", value: Routes.ContinueMatch)
+                            .colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                            .padding(/*@START_MENU_TOKEN@*/EdgeInsets()/*@END_MENU_TOKEN@*/)
                     }
+                    
+                    NavigationLink("New Match", value: Routes.ConfigMatch)
+                        .padding(/*@START_MENU_TOKEN@*/EdgeInsets()/*@END_MENU_TOKEN@*/)
+                    
+                    NavigationLink("History", value: Routes.History)
+                        .padding(/*@START_MENU_TOKEN@*/EdgeInsets()/*@END_MENU_TOKEN@*/)
+                        .navigationDestination(for: Routes.self){ route in
+                            switch route {
+                            case .ContinueMatch:
+                                MatchView(match: match[0])
+                            case .ConfigMatch:
+                                MatchConfigView().onAppear(perform: {
+                                    if(!match.isEmpty){
+                                        match[0].finishMatch()
+                                        context.insert(match[0])
+                                        try? context.save()
+                                    }
+                                })
+                            case .History:
+                                HisoryView()
+                            }
+                        }
                 }
             }
         }

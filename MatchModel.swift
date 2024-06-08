@@ -68,7 +68,7 @@ final class TennisMatch {
         self.player1 = player1
         self.player2 = player2
         self.server = server
-        self.winner = PlayerDetails(name: "null")
+        self.winner = PlayerDetails(name: "Unfinished")
         self.isGamemodeFiveSets = isGamemodeFiveSets
         self.timestamp = Date()
         self.isMatchFinished = false
