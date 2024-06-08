@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import SwiftData
 
-enum Player: String, Identifiable {
+enum Player: String, Identifiable, Codable{
     case player1
     case player2
     
     var id: String { rawValue }
 }
 
-struct PlayerDetails {
+struct PlayerDetails: Codable {
     let name: String
     var points: Int = 0
     var games: Int = 0
@@ -31,16 +32,17 @@ enum Score {
     case game
 }
 
-struct TennisMatch {
-    private(set) var player1Points: Int = 0
-    private(set) var player2Points: Int = 0
-    private(set) var player1Games: Int = 0
-    private(set) var player2Games: Int = 0
-    private(set) var player1Sets: Int = 0
-    private(set) var player2Sets: Int = 0
-    private(set) var isTieBreak: Bool = false
-    private(set) var player1TieBreakPoints: Int = 0
-    private(set) var player2TieBreakPoints: Int = 0
+@Model
+final class TennisMatch {
+    private(set) var player1Points: Int
+    private(set) var player2Points: Int
+    private(set) var player1Games: Int
+    private(set) var player2Games: Int
+    private(set) var player1Sets: Int
+    private(set) var player2Sets: Int
+    private(set) var isTieBreak: Bool
+    private(set) var player1TieBreakPoints: Int
+    private(set) var player2TieBreakPoints: Int
     var player1: PlayerDetails
     var player2: PlayerDetails
     var server: Player
@@ -50,8 +52,27 @@ struct TennisMatch {
     let gamesToWinSet = 6
     let pointsToWinTieBreak = 7
     var setsToWinMatch =  2
+    let timestamp: Date = Date()
     
-    mutating func pointWon(by player: Player) {
+    init(player1: PlayerDetails, player2: PlayerDetails, server: Player, isGamemodeFiveSets: Bool) {
+        self.player1Points = 0
+        self.player2Points = 0
+        self.player1Games = 0
+        self.player2Games = 0
+        self.player1Sets = 0
+        self.player2Sets = 0
+        self.isTieBreak = false
+        self.player1TieBreakPoints = 0
+        self.player2TieBreakPoints = 0
+        self.player1 = player1
+        self.player2 = player2
+        self.server = server
+        self.winner = PlayerDetails(name: "null")
+        self.isGamemodeFiveSets = isGamemodeFiveSets
+        self.timestamp = Date()
+    }
+    
+    func pointWon(by player: Player) {
         if isTieBreak {
             handleTieBreakPoint(wonBy: player)
         } else {
@@ -59,7 +80,7 @@ struct TennisMatch {
         }
     }
     
-    private mutating func handleRegularPoint(wonBy player: Player) {
+    private func handleRegularPoint(wonBy player: Player) {
         switch (player1Points, player2Points) {
         case (3, 3): // Deuce
             if player == .player1 {
@@ -93,7 +114,7 @@ struct TennisMatch {
         }
     }
     
-    private mutating func handleTieBreakPoint(wonBy player: Player) {
+    private func handleTieBreakPoint(wonBy player: Player) {
         if player == .player1 {
             player1TieBreakPoints += 1
         } else {
@@ -111,7 +132,7 @@ struct TennisMatch {
         }
     }
     
-    private mutating func winGame(by player: Player) {
+    private func winGame(by player: Player) {
         if player == .player1 {
             player1Games += 1
         } else {
@@ -130,7 +151,7 @@ struct TennisMatch {
         switchServer()
     }
     
-    private mutating func winSet(by player: Player) {
+    private func winSet(by player: Player) {
         if player == .player1 {
             player1Sets += 1
         } else {
@@ -141,7 +162,7 @@ struct TennisMatch {
         player2Games = 0
         player1TieBreakPoints = 0
         player2TieBreakPoints = 0
-        setsToWinMatch = isGamemodeFiveSets ? 3 : 2
+        let setsToWinMatch = isGamemodeFiveSets ? 3 : 2
         
         if player1Sets == setsToWinMatch {
             winner = player1
@@ -151,7 +172,7 @@ struct TennisMatch {
         }
     }
     
-    private mutating func switchServer() {
+    private func switchServer() {
         server = (server == .player1) ? .player2 : .player1
     }
     

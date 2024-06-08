@@ -8,14 +8,9 @@
 import SwiftUI
 
 struct MatchView: View {
-    @State private var match: TennisMatch
+    @State var match: TennisMatch
     @EnvironmentObject var root : ReturnRoot
-
-    init(player1Name: String, player2Name: String, server: Player, isFiveSets: Bool) {
-           _match = State(initialValue: TennisMatch(player1: PlayerDetails(name: player1Name),
-                                                    player2: PlayerDetails(name: player2Name),
-                                                    server: server, winner: PlayerDetails(name: "null"), isGamemodeFiveSets: isFiveSets))
-       }
+    @Environment(\.modelContext) var context
 
        var body: some View {
            ScoreView(match: $match)
@@ -35,6 +30,7 @@ struct MatchView: View {
 struct ScoreView: View {
     @Binding var match: TennisMatch
     @State private var showMatchOver = false
+    @Environment(\.modelContext) var context
     
     var body: some View {
         VStack {
@@ -136,12 +132,18 @@ struct ScoreView: View {
     }
     
     private func checkMatchOver() {
+        saveMatch()
             if match.player1Sets == match.setsToWinMatch || match.player2Sets == match.setsToWinMatch {
                 withAnimation {
                     showMatchOver = true
                 }
             }
         }
+    
+    private func saveMatch() {
+        context.insert(match)
+        try? context.save()
+    }
     
     private func currentScore(_ points: Int) -> String {
         switch points {
@@ -160,5 +162,5 @@ struct PlayerFront {
 }
 
 #Preview {
-    MatchView(player1Name: "Pepe", player2Name: "Pablo", server: Player.player2, isFiveSets: true )
+    MatchView(match: TennisMatch(player1: PlayerDetails(name: "Pablo"), player2: PlayerDetails(name: "Pepe"), server: Player.player1, isGamemodeFiveSets: false)).environmentObject(ReturnRoot())
 }

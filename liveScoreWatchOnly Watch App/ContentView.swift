@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import SwiftData
 enum Routes: Hashable {
     case ConfigMatch
     case ContinueMatch
@@ -22,8 +22,8 @@ class ReturnRoot: ObservableObject {
 
 struct ContentView: View {
     @EnvironmentObject var root : ReturnRoot
-    @State private var match: TennisMatch?
     @State private var isMatchCreated: Bool = false
+    @Query (sort: \TennisMatch.timestamp, order: .reverse) private var match: [TennisMatch]
     
     var body: some View {
         NavigationStack(path: $root.path) {
@@ -33,17 +33,20 @@ struct ContentView: View {
                     icon: { Image(systemName: "tennisball") }
                 ).font(.title2)
                 
+                
+                
+                if(!match.isEmpty){
+                    NavigationLink("Continue Match", value: Routes.ContinueMatch)
+                        .colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                        .padding()
+                }
+                
                 NavigationLink("New Match", value: Routes.ConfigMatch)
                 .padding()
-    
-                NavigationLink("Continue Match", value: Routes.ContinueMatch)
-                .colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                .padding()
-                
                 .navigationDestination(for: Routes.self){ route in
                     switch route {
                     case .ContinueMatch:
-                        MatchView(player1Name: "Test1", player2Name: "Test2", server: Player.player1, isFiveSets: false)
+                        MatchView(match: match[0])
                     case .ConfigMatch:
                         MatchConfigView()
                     }

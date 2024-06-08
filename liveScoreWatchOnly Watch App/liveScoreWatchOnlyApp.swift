@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct liveScoreWatchOnly_Watch_AppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(ReturnRoot())
+                .modelContainer(for: TennisMatch.self)
         }
     }
 }

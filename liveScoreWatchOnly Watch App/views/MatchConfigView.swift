@@ -13,6 +13,7 @@ struct MatchConfigView: View {
     @State private var player2Name: String = ""
     @State private var server: Player = .player1
     @State private var isFiveSets = false
+    @Environment(\.modelContext) var context
 
     var body: some View {
             ScrollView{
@@ -55,7 +56,7 @@ struct MatchConfigView: View {
                             .padding(.vertical, 4)
                         NavigationLink("Start Match", value: 1)
                             .navigationDestination(for: Int.self){ _ in
-                            MatchView(player1Name: player1Name, player2Name: player2Name, server: server, isFiveSets: isFiveSets)
+                                MatchView(match: TennisMatch(player1: PlayerDetails(name: player1Name), player2: PlayerDetails(name: player2Name), server: server, isGamemodeFiveSets: isFiveSets))
                         }.colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                             .padding(.horizontal, 8)
                     }
