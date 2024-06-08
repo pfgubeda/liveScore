@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct MatchConfigView: View {
+    @EnvironmentObject var root : ReturnRoot
     @State private var player1Name: String = ""
     @State private var player2Name: String = ""
     @State private var server: Player = .player1
     @State private var isFiveSets = false
 
     var body: some View {
-        NavigationStack {
             ScrollView{
                 VStack {
                     if(player1Name.isEmpty || player2Name.isEmpty){
@@ -53,7 +53,8 @@ struct MatchConfigView: View {
                         }
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                        NavigationLink("Start Match"){
+                        NavigationLink("Start Match", value: 1)
+                            .navigationDestination(for: Int.self){ _ in
                             MatchView(player1Name: player1Name, player2Name: player2Name, server: server, isFiveSets: isFiveSets)
                         }.colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                             .padding(.horizontal, 8)
@@ -61,6 +62,5 @@ struct MatchConfigView: View {
                 }
                 .navigationTitle("Setup Match")
             }
-        }
     }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MatchView: View {
     @State private var match: TennisMatch
+    @EnvironmentObject var root : ReturnRoot
 
     init(player1Name: String, player2Name: String, server: Player, isFiveSets: Bool) {
            _match = State(initialValue: TennisMatch(player1: PlayerDetails(name: player1Name),
@@ -19,6 +20,15 @@ struct MatchView: View {
        var body: some View {
            ScoreView(match: $match)
                .navigationBarBackButtonHidden()
+               .toolbar {
+                   ToolbarItem(placement: .topBarLeading) {
+                       Button(action: {
+                           root.root()
+                       }) {
+                           Label("Back", systemImage: "arrow.left.circle")
+                       }
+                   }
+               }
        }
 }
 
