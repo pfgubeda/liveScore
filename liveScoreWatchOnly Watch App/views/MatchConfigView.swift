@@ -9,11 +9,13 @@ import SwiftUI
 
 struct MatchConfigView: View {
     @EnvironmentObject var root : ReturnRoot
+    
     @State private var player1Name: String = ""
     @State private var player2Name: String = ""
     @State private var server: Player = .player1
     @State private var isFiveSets = false
-    @Environment(\.modelContext) var context
+
+    
 
     var body: some View {
             ScrollView{

@@ -22,10 +22,10 @@ class ReturnRoot: ObservableObject {
 
 struct ContentView: View {
     @EnvironmentObject var root : ReturnRoot
+    @Environment(\.modelContext) var context
+    
     @State private var isMatchCreated: Bool = false
     @Query (filter: #Predicate { $0.isMatchFinished == false },sort: \TennisMatch.timestamp, order: .reverse) private var match: [TennisMatch]
-    
-    
     
     var body: some View {
         NavigationStack(path: $root.path) {
@@ -50,7 +50,13 @@ struct ContentView: View {
                     case .ContinueMatch:
                         MatchView(match: match[0])
                     case .ConfigMatch:
-                        MatchConfigView()
+                        MatchConfigView().onAppear(perform: {
+                            if(!match.isEmpty){
+                                match[0].finishMatch()
+                                context.insert(match[0])
+                                try? context.save()
+                            }
+                        })
                     }
                 }
             }

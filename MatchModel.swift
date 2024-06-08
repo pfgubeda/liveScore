@@ -168,12 +168,16 @@ final class TennisMatch {
         
         if player1Sets == setsToWinMatch {
             winner = player1
-            isMatchFinished = true
+            finishMatch()
         }
         if player2Sets == setsToWinMatch {
             winner = player2
-           isMatchFinished = true
+           finishMatch()
         }
+    }
+    
+    public func finishMatch(){
+        isMatchFinished = true
     }
     
     private func switchServer() {
