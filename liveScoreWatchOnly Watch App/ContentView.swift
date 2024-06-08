@@ -23,7 +23,9 @@ class ReturnRoot: ObservableObject {
 struct ContentView: View {
     @EnvironmentObject var root : ReturnRoot
     @State private var isMatchCreated: Bool = false
-    @Query (sort: \TennisMatch.timestamp, order: .reverse) private var match: [TennisMatch]
+    @Query (filter: #Predicate { $0.isMatchFinished == false },sort: \TennisMatch.timestamp, order: .reverse) private var match: [TennisMatch]
+    
+    
     
     var body: some View {
         NavigationStack(path: $root.path) {

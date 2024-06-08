@@ -43,6 +43,7 @@ final class TennisMatch {
     private(set) var isTieBreak: Bool
     private(set) var player1TieBreakPoints: Int
     private(set) var player2TieBreakPoints: Int
+    private(set) var isMatchFinished: Bool
     var player1: PlayerDetails
     var player2: PlayerDetails
     var server: Player
@@ -70,6 +71,7 @@ final class TennisMatch {
         self.winner = PlayerDetails(name: "null")
         self.isGamemodeFiveSets = isGamemodeFiveSets
         self.timestamp = Date()
+        self.isMatchFinished = false
     }
     
     func pointWon(by player: Player) {
@@ -82,23 +84,23 @@ final class TennisMatch {
     
     private func handleRegularPoint(wonBy player: Player) {
         switch (player1Points, player2Points) {
-        case (3, 3): // Deuce
+        case (3, 3):
             if player == .player1 {
                 player1Points = 4
             } else {
                 player2Points = 4
             }
-        case (4, 3): // Advantage player1
+        case (4, 3):
             if player == .player1 {
                 winGame(by: .player1)
             } else {
-                player1Points = 3 // back to deuce
+                player1Points = 3
             }
-        case (3, 4): // Advantage player2
+        case (3, 4):
             if player == .player2 {
                 winGame(by: .player2)
             } else {
-                player2Points = 3 // back to deuce
+                player2Points = 3
             }
         default:
             if player == .player1 {
@@ -166,9 +168,11 @@ final class TennisMatch {
         
         if player1Sets == setsToWinMatch {
             winner = player1
+            isMatchFinished = true
         }
         if player2Sets == setsToWinMatch {
             winner = player2
+           isMatchFinished = true
         }
     }
     
