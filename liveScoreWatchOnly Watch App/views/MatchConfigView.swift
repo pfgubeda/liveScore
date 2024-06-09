@@ -58,7 +58,7 @@ struct MatchConfigView: View {
                             .padding(.vertical, 4)
                         NavigationLink("Start Match", value: 1)
                             .navigationDestination(for: Int.self){ _ in
-                                MatchView(match: TennisMatch(player1: PlayerDetails(name: player1Name), player2: PlayerDetails(name: player2Name), server: server, isGamemodeFiveSets: isFiveSets))
+                                MatchView(match: TennisMatch(player1: PlayerDetails(name: player1Name), player2: PlayerDetails(name: player2Name), server: server, isGamemodeFiveSets: isFiveSets), commingFromConfig: true)
                         }.colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                             .padding(.horizontal, 8)
                     }

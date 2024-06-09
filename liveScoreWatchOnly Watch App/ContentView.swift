@@ -53,7 +53,7 @@ struct ContentView: View {
                         .navigationDestination(for: Routes.self){ route in
                             switch route {
                             case .ContinueMatch:
-                                MatchView(match: match[0])
+                                MatchView(match: match[0], commingFromConfig: false)
                             case .ConfigMatch:
                                 MatchConfigView().onAppear(perform: {
                                     if(!match.isEmpty){

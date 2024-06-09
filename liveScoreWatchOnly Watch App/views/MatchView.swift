@@ -9,21 +9,27 @@ import SwiftUI
 
 struct MatchView: View {
     @State var match: TennisMatch
+    @State var commingFromConfig: Bool
     @EnvironmentObject var root : ReturnRoot
     @Environment(\.modelContext) var context
 
        var body: some View {
-           ScoreView(match: $match)
+           
+           if(commingFromConfig){
+               ScoreView(match: $match)
                .navigationBarBackButtonHidden()
                .toolbar {
                    ToolbarItem(placement: .topBarLeading) {
                        Button(action: {
                            root.root()
                        }) {
-                           Label("Back", systemImage: "arrow.left.circle")
+                           Label("Back", systemImage: "chevron.left")
                        }
                    }
                }
+           }else{
+               ScoreView(match: $match)
+           }
        }
 }
 
@@ -35,61 +41,93 @@ struct ScoreView: View {
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: "tennisball")
-                    .opacity(match.server == .player1 ? 1:0)
-                    .animation(.bouncy(duration: 1), value: match.server)
-                Text("\(match.player1.name)")
-                    .font(.headline)
-                    .foregroundColor(match.server == .player1 ? .green : .primary)
-                
+                if(!showMatchOver){
+                    Image(systemName: "tennisball")
+                        .opacity(match.server == .player1 ? 1:0)
+                        .animation(.bouncy(duration: 1), value: match.server)
+                        .frame(width: 10, alignment: .leading).padding(.horizontal)
+                    Text("\(match.player1.name)")
+                        .font(.headline)
+                        .foregroundColor(match.server == .player1 ? .green : .primary)
+                        .frame(width: 70, alignment: .trailing)
+                        .fixedSize(horizontal: true, vertical: true)
+                        .lineLimit(1)
+                }else{
+                    Text("\(match.player1.name)")
+                        .font(.headline)
+                        .foregroundColor(match.winner.name == match.player1.name ? .green : .primary)
+                        .frame(width: 70, alignment: .trailing)
+                        .fixedSize(horizontal: true, vertical: true)
+                        .lineLimit(1)
+                }
                 Divider()
                 
                 Text("\(match.player1Sets)")
                     .font(.subheadline)
                 Divider()
                 
-                Text("\(match.player1Games)")
-                    .font(.subheadline)
-                Divider()
-                
-                if(match.isTieBreak){
-                    Text("\(match.player1TieBreakPoints)").padding()
-                }else{
-                    Text(currentScore(match.player1Points))
+                    Text("\(match.player1Games)")
                         .font(.subheadline)
-                }
+                    Divider()
+                    
+                    if(match.isTieBreak){
+                        Text("\(match.player1TieBreakPoints)")
+                            .font(.subheadline)
+                    }else{
+                        if(currentScore(match.player1Points)=="ADV"){
+                            Text(currentScore(match.player1Points)).frame(width: 22, alignment: .center).font(.system(size: 10))
+                        }else{
+                            Text(currentScore(match.player1Points)).frame(width: 22, alignment: .center)
+                        }
+                    }
             }
             .padding()
             
             Divider()
             
             HStack {
-                Image(systemName: "tennisball")
-                    .opacity(match.server == .player2 ? 1:0)
-                    .animation(.bouncy(duration: 1), value: match.server)
-                Text("\(match.player2.name)")
-                    .font(.headline)
-                    .foregroundColor(match.server == .player2 ? .green : .primary)
-                
+                if(!showMatchOver){
+                    Image(systemName: "tennisball")
+                        .opacity(match.server == .player2 ? 1:0)
+                        .animation(.bouncy(duration: 1), value: match.server)
+                        .frame(width: 10, alignment: .leading).padding(.horizontal)
+                        .fixedSize(horizontal: true, vertical: true)
+                    Text("\(match.player2.name)")
+                        .font(.headline)
+                        .foregroundColor(match.server == .player2 ? .green : .primary)
+                        .frame(width: 70, alignment: .trailing)
+                        .fixedSize(horizontal: true, vertical: true)
+                        .lineLimit(1)
+                }else{
+                    Text("\(match.player2.name)")
+                        .font(.headline)
+                        .foregroundColor(match.winner.name == match.player2.name ? .green : .primary)
+                        .frame(width: 70, alignment: .trailing)
+                        .fixedSize(horizontal: true, vertical: true)
+                        .lineLimit(1)
+                }
                 Divider()
                 
                 Text("\(match.player2Sets)")
                     .font(.subheadline)
                 Divider()
-                
-                Text("\(match.player2Games)")
-                    .font(.subheadline)
-                Divider()
-                if(match.isTieBreak){
-                    Text("\(match.player2TieBreakPoints)").padding()
-                }else{
-                    Text(currentScore(match.player2Points))
+            
+                    Text("\(match.player2Games)")
                         .font(.subheadline)
-                }
+                    Divider()
+                    if(match.isTieBreak){
+                        Text("\(match.player2TieBreakPoints)")
+                            .font(.subheadline)
+                    }else{
+                        if(currentScore(match.player2Points)=="ADV"){
+                            Text(currentScore(match.player2Points)).frame(width: 22, alignment: .center).font(.system(size: 10))
+                        }else{
+                            Text(currentScore(match.player2Points)).frame(width: 22, alignment: .center)
+                        }
+                    }
             }
             .padding()
             
-            Divider()
             if(!showMatchOver){
                 HStack {
                     Button(action: {
@@ -117,7 +155,7 @@ struct ScoreView: View {
             }
             
             if showMatchOver {
-                var matchNameFinished = checkMatchWinner()
+                let matchNameFinished = checkMatchWinner()
                
                 Text("\(match.winner.name)")
                                 .font(.title)
@@ -172,5 +210,5 @@ struct PlayerFront {
 }
 
 #Preview {
-    MatchView(match: TennisMatch(player1: PlayerDetails(name: "Pablo"), player2: PlayerDetails(name: "Pepe"), server: Player.player1, isGamemodeFiveSets: false)).environmentObject(ReturnRoot())
+    MatchView(match: TennisMatch(player1: PlayerDetails(name: "Pablo"), player2: PlayerDetails(name: "Pepe"), server: Player.player1, isGamemodeFiveSets: false), commingFromConfig: false).environmentObject(ReturnRoot())
 }
