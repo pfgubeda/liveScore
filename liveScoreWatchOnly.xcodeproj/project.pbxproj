@@ -52,7 +52,7 @@
 		657396042C0DB0B2009C22BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		657396072C0DB0B2009C22BC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		657396132C0DB2F0009C22BC /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
-		657396172C0DB9B6009C22BC /* MatchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchModel.swift; sourceTree = "<group>"; };
+		657396172C0DB9B6009C22BC /* MatchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchModel.swift; path = ../MatchModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,6 @@
 		657395EE2C0DB0AF009C22BC = {
 			isa = PBXGroup;
 			children = (
-				657396172C0DB9B6009C22BC /* MatchModel.swift */,
 				657395FF2C0DB0B0009C22BC /* liveScoreWatchOnly Watch App */,
 				657395F62C0DB0B0009C22BC /* Products */,
 			);
@@ -87,6 +86,7 @@
 		657395FF2C0DB0B0009C22BC /* liveScoreWatchOnly Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				657396172C0DB9B6009C22BC /* MatchModel.swift */,
 				657396122C0DB2D3009C22BC /* views */,
 				657396002C0DB0B0009C22BC /* liveScoreWatchOnlyApp.swift */,
 				657396022C0DB0B0009C22BC /* ContentView.swift */,

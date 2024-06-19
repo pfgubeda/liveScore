@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 enum Routes: Hashable {
     case ConfigMatch
-    case ContinueMatch
     case History
 }
 
@@ -40,8 +39,9 @@ struct ContentView: View {
                     ScrollView{
                     
                     if(!match.isEmpty){
-                        NavigationLink("Continue Match", value: Routes.ContinueMatch)
-                            .colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                        NavigationLink("Continue Match") {
+                            MatchView(match: match[0],commingFromConfig: false)
+                        }.colorMultiply(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                             .padding(/*@START_MENU_TOKEN@*/EdgeInsets()/*@END_MENU_TOKEN@*/)
                     }
                     
@@ -52,8 +52,6 @@ struct ContentView: View {
                         .padding(/*@START_MENU_TOKEN@*/EdgeInsets()/*@END_MENU_TOKEN@*/)
                         .navigationDestination(for: Routes.self){ route in
                             switch route {
-                            case .ContinueMatch:
-                                MatchView(match: match[0], commingFromConfig: false)
                             case .ConfigMatch:
                                 MatchConfigView().onAppear(perform: {
                                     if(!match.isEmpty){
