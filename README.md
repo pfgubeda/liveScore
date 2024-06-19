@@ -2,7 +2,11 @@
 
 ## Overview
 
-**Live Score** is a Watch Only app designed to manage and track the scores of tennis matches. With a user-friendly interface, it simplifies scorekeeping, allowing users to focus on enjoying the game. The app offers features to input player details, select game settings, view match history, and resume unfinished matches.
+**Live Score** is a Watch Only app designed to manage and track the scores of tennis matches. With a user-friendly interface, it simplifies scorekeeping, allowing users to focus on enjoying the game. The app offers features to input player details, select game settings, view match history and resume unfinished matches.
+
+<img src="https://github.com/pfgubeda/liveScore/assets/79854008/804de773-c4b4-4687-a5d3-3874b7506ccf" width="250" style="border-radius: 20px;"/>
+<img src="https://github.com/pfgubeda/liveScore/assets/79854008/2ffa34d4-c074-4822-9263-e141bb4ebfdb" width="250" style="border-radius: 20px;"/>
+<img src="https://github.com/pfgubeda/liveScore/assets/79854008/77148550-0609-40a0-9174-aebf3e8ad23e" width="250" style="border-radius: 20px;"/>
 
 ## Features
 
